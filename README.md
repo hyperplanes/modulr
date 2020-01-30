@@ -1,5 +1,5 @@
 # modulr
-A dead-simple framework for modularizing R scripts. Consists of only two functions: `import` and `export`. The paradigm employed is that each file is a separate file, and objects can only be shared between files if they are explicitly exported and imported into their respective environments. 
+A dead-simple framework for modularizing R scripts. Consists of only two functions: `import` and `export`. The paradigm employed is that each file is a separate module, and objects can only be shared between files if they are exported and imported into their respective environments. 
 
 Calling the `export` method at the end of a file allows you to specify exactly which objects should be accessible from other scripts. Importing these objects using `import` guarantees that executing the code in that file won't pollute global namespace, and that objects in the global namespace aren't accidentally accessible to the script in that file.
 

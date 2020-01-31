@@ -1,8 +1,25 @@
-source('../src/script.r',chdir=TRUE,local=baseenv())
+source('../src/script.r',chdir=TRUE,local=baseenv()) #grab the import/export functions
 
-test=import("r/myFunction.r") #by default sets test to the last object exported
-test1=import(myFunction1,from="r/myFunction.r") #will assign myFunction1 to workspace and myFunction2 to test1
-test2=import(myFunction1,myFunction2,from="r/myFunction.r") #supports an arbitrary number of exports
-test3=import(foo=myFunction1,myFunction2,from="r/myFunction.r") #myFunction1 is assigned as foo
+#by default returns to the last object since no explicit export
+defaultExport=import('r/defaultExport.r')
 
-export(test,test1,test2,test3) #can export an arbitrary number of objects
+#returns the exported function
+singleExportAtEndOfFile=import('r/singleExportAtEndOfFile.r') 
+
+#returns the last exported object
+multipleExportsAtEndOfFile=import('r/multipleExportsAtEndOfFile.r') 
+
+#returns the last exported object and imports myFunction as foo
+multipleExportsAtEndOfFile2=import(foo=myFunction,'r/multipleExportsAtEndOfFile.r') 
+
+#returns the last exported object and imports myFunction
+multipleExportsAtEndOfFile3=import(myFunction,from='r/multipleExportsAtEndOfFile.r') 
+
+#returns the last exported object and imports myFunction and w
+multipleExportsAtEndOfFile4=import(myFunction,w,from='r/multipleExportsAtEndOfFile.r') 
+
+#returns the last exported object and imports myFunction as bar1 and w as foo1
+multipleExportsAtEndOfFile5=import(bar1=myFunction,foo1=w,from='r/multipleExportsAtEndOfFile.r') 
+
+#returns the last exported object and imports z as foo, myFunction as bar1, and w as foo1
+multipleExportsInSeparateDeclarations=import(foo=z, bar1=myFunction,foo1=w,from='r/multipleExportsInSeparateDeclarations.r') 

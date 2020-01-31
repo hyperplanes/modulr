@@ -1,7 +1,15 @@
 export=function(...){
+	env=parent.frame()
 	exports=list(...)
 	names(exports)=vapply(substitute(list(...))[-1],FUN=deparse,FUN.VALUE="")
-	invisible(exports)
+	if(!exists("modulr_exports",where=env)){
+		env$modulr_exports=exports		
+	}else{
+		for(i in names(exports)){
+			env$modulr_exports[i]=exports[i]
+		}
+	}
+	invisible(env$modulr_exports)
 }
 import=function(from="",...){
 	if(!is.character(substitute(from))){
@@ -10,7 +18,9 @@ import=function(from="",...){
 	env = new.env(parent=baseenv())
 	env$export=export
 	exports=source(from,chdir=TRUE,local=env)$value
-
+	if(exists("modulr_exports",where=env)){
+		exports=env$modulr_exports
+	}
 	args=lapply(substitute(list(...))[-1],FUN=deparse)
 	if(length(args)>0){
 		argNames=names(args)
@@ -30,5 +40,9 @@ import=function(from="",...){
 		}
 		list2env(imports,envir=parent.frame())
 	}
-	invisible(exports[[length(exports)]])
+	if(is.list(exports)){
+		invisible(exports[[length(exports)]])
+	}else{
+		invisible(exports)
+	}
 }
